@@ -1,65 +1,38 @@
 # UDD_Proyecto-M7_C10_Daniel_toro
 
-# Predicción del Rating de Aplicaciones en Google Play Store
+# API de Predicción de Rating de Apps
 
-## Descripción
-
-Este proyecto tiene como objetivo predecir la calificación promedio (rating) que recibirá una aplicación en Google Play Store, utilizando características como categoría, precio, tamaño, número de instalaciones y más.
-
-El modelo ayuda a desarrolladores y empresas a anticipar la calidad percibida por los usuarios, facilitando la toma de decisiones para mejorar las aplicaciones antes de su lanzamiento o actualización.
+Esta API recibe datos de una app móvil con las siguientes características y devuelve una predicción del **Rating** junto con un intervalo de confianza.
 
 ---
 
-## Estructura del Proyecto
+## Características esperadas (features)
 
-- `notebooks/`  
-  Contiene el notebook con análisis exploratorio, limpieza de datos, entrenamiento, ajuste y evaluación del modelo.
-
-- `saved_models/`  
-  Modelo final entrenado y guardado (`ensemble_rating_model.pkl`).
-
-- `api/`  
-  Código para exponer el modelo mediante una API REST (ejemplo con FastAPI).
-
-- `requirements.txt`  
-  Dependencias necesarias para ejecutar el proyecto y la API.
+| Nombre          | Descripción                      |
+|-----------------|---------------------------------|
+| `Reviews`       | Número de reviews                |
+| `Size`          | Tamaño de la app (MB, KB, etc.) |
+| `Installs`      | Número de instalaciones         |
+| `Price`         | Precio de la app                |
+| `Updated_Day`   | Día de la última actualización  |
+| `Updated_Month` | Mes de la última actualización  |
+| `Updated_Year`  | Año de la última actualización  |
 
 ---
 
-## Metodología
+## Endpoint
 
-1. **Análisis Exploratorio de Datos (EDA)**  
-   Se exploraron distribuciones, relaciones entre variables y se limpió la información faltante o incorrecta.
+### POST `https://datv.pythonanywhere.com/predice`
 
-2. **Preprocesamiento**  
-   Limpieza y transformación de variables, incluyendo codificación de categóricas y conversión de tipos.
-
-3. **Modelado**  
-   Entrenamiento de modelos de Machine Learning: Random Forest y XGBoost, con ajuste de hiperparámetros mediante Grid Search.
-
-4. **Ensemble**  
-   Combinación de modelos para mejorar precisión y reducir varianza.
-
-5. **Evaluación**  
-   Se usaron métricas RMSE, MAE y R² para evaluar el desempeño.
-
-6. **Visualización**  
-   Gráficos claros y personalizados para entender la distribución de los datos, importancia de variables y desempeño del modelo.
+Envía un JSON con las características (excepto `Rating`) en orden y recibe la predicción del rating junto con el intervalo de confianza.
 
 ---
 
-## Uso
+### Ejemplo de request
 
-### Entrenamiento y Evaluación
+```json
+{
+  "features": [1000, 50, 100000, 0, 12, 5, 2024],
+  "confidence": 0.95
+}
 
-Ejecuta el notebook en `notebooks/` para reproducir el análisis y entrenamiento.
-
-### API para Predicción
-
-En la carpeta `api/` encontrarás un ejemplo de FastAPI para desplegar el modelo. 
-
-Ejecuta:
-
-```bash
-pip install -r requirements.txt
-uvicorn api.main:app --reload
