@@ -1,6 +1,4 @@
 from flask import Flask, request
-import pandas as pd
-import numpy as np
 from scipy.stats import norm
 import joblib
 
